@@ -2,13 +2,13 @@
  * Abstract Observation class 
  * 
  * @author Tim Weaver
- * @version 2018-10-03
+ * @version 2018-10-23
  * 
  */
 
 public abstract class AbstractObservation
 {
-    private boolean valid;
+    protected boolean valid;
     
     /**
      * method is not used in program so it is left blank!

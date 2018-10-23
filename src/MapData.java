@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Map Data class takes a file and parses it based on white space
@@ -12,31 +16,17 @@ import java.util.GregorianCalendar;
  * as well as solar radiation min, max, and average. This is then printed out.
  * 
  * @author Tim Weaver
- * @version 2018-10-03
+ * @version 2018-10-23
  * 
  */
 
 public class MapData 
 {
-	/**
-	 * Array to keep track of all of the Solar Radiation data
-	 */
-	//private Observation[] sradData;
-	ArrayList<Observation> sradData = new ArrayList<Observation>(); 
-	
-	/**
-	 * Array to keep track of all of the Air Temperature data
-	 * at 1.5 meters 
-	 */
-	//private Observation[] tairData;
-	ArrayList<Observation> tairData = new ArrayList<Observation>();
-	
-	/**
-	 * Array to keep track of all of the Air Temperature data
-	 * at 9 meters
-	 */
-	//private Observation[] ta9mData; 
-	ArrayList<Observation> ta9mData = new ArrayList<Observation>();	 
+    HashMap<String, ArrayList<Observation>> dataCatalog = new HashMap<String, ArrayList<Observation>>();
+    
+    EnumMap<StatsType, TreeMap<String, Statistics>> statistics = new EnumMap<StatsType, TreeMap<String, Statistics>>();
+    
+    TreeMap<String, Integer> paramPositions = new TreeMap<String, Integer>();
 	
 	/**
      * String containing TA9M
@@ -59,78 +49,15 @@ public class MapData
 	private String STID = "STID";
 	
 	/**
-     * Holds stid position in the file
-     */
-	int stidPosition = -1;
-	
-	/**
-     * Holds tair position in the file
-     */
-	int tairPosition = -1;
-	
-	/**
-     * Holds srad position in the file
-     */
-	int sradPosition = -1;
-	
-	/**
-     * Holds ta9m position in the file
-     */
-	int ta9mPosition = -1;
-	
-	/**
 	 * Contains the word "Mesonet" which is used
 	 * to identify the station
 	 */
 	private String MESONET = "Mesonet";
 	
 	/**
-	 * The directory provided by user
+	 * The File Name provided by user
 	 */
-	private String directory = "";
-	
-	/**
-	 * Variable that holds the Air Temperature minimum at 1.5 meters
-	 */
-	private Statistics tairMin;
-	
-	/**
-	 * Variable that holds the Air Temperature maximum at 1.5 meters
-	 */
-	private Statistics tairMax;
-	
-	/**
-	 * Variable that holds the Air Temperature average at 1.5 meters
-	 */
-	private Statistics tairAverage;
-	/**
-	 * Variable that holds the Air Temperature min at 9 meters
-	 */
-	private Statistics ta9mMin;
-	/**
-	 * Variable that holds the Air Temperature max at 9 meters
-	 */
-	private Statistics ta9mMax;
-	/**
-	 * Variable that holds the Air Temperature average at 9 meters
-	 */
-	private Statistics ta9mAverage;
-	/**
-	 * Variable that holds the solar radiation min
-	 */
-	private Statistics sradMin;
-	/**
-	 * Variable that holds the solar radiation max
-	 */
-	private Statistics sradMax;
-	/**
-	 * Variable that holds the solar radiation average
-	 */
-	private Statistics sradAverage;
-	/**
-	 * Variable that holds the solar radiation total
-	 */
-	private Statistics sradTotal;
+	private String fileName = "";
 	
 	/**
      * Stores the date 
@@ -158,14 +85,25 @@ public class MapData
 	    stidPosition = position.indexOf(STID);
 	}
 	
-	/**
-	 * Sets positions 
-	 * @return set positions
-	 */
-	public int[] getPositions()
+	public Integer getIndexOf()
 	{
-	    return new int[] { tairPosition, ta9mPosition, sradPosition, stidPosition};
+	    return 0;
 	}
+	
+	private void calculateAllStatistics()
+	{
+	    
+	}
+	
+	private void prepareDataCatalog()
+	{
+	    
+	}
+	
+	public Statistics getStatistics(StatsType type, String paramId)
+    {
+        
+    }
 	
 	/**
 	 * Calculates the min, max, and average for ta9m, tair, and srad
@@ -421,102 +359,4 @@ public class MapData
 		return returnStr;
 	}
 	
-	/**
-	 * Returns the directory information
-	 * 
-	 * @return directory information
-	 */
-	public String getDirectory() {
-		return directory;
-	}
-
-	/**
-	 * Returns the air temperature min at 1.5 meters
-	 * 
-	 * @return air temperature min at 1.5 meters
-	 */
-	public Observation getTairMin() {
-		return tairMin;  
-	}
-
-	/**
-	 * Returns the air temperature max at 1.5 meters
-	 * 
-	 * @return air temperature max at 1.5 meters
-	 */
-	public Observation getTairMax() {
-		return tairMax;
-	}
-
-	/**
-	 * Returns the air temperature average at 1.5 meters
-	 * 
-	 * @return air temperature average at 1.5 meters
-	 */
-	public Observation getTairAverage() {
-		return tairAverage;
-	}
-
-	/**
-	 * Returns the air temperature min at 9 meters
-	 * 
-	 * @return air temperature min at 9 meters
-	 */
-	public Observation getTa9mMin() {
-		return ta9mMin;
-	}
-
-	/**
-	 * Returns the air temperature max at 9 meters
-	 * 
-	 * @return air temperature max at 9 meters
-	 */
-	public Observation getTa9mMax() {
-		return ta9mMax;
-	}
-
-	/**
-	 * Returns the air temperature average at 9 meters
-	 * 
-	 * @return air temperature average at 9 meters
-	 */
-	public Observation getTa9mAverage() {
-		return ta9mAverage;
-	}
-
-	/**
-	 * Returns the solar radiation min
-	 * 
-	 * @return solar radiation min
-	 */
-	public Observation getSradMin() {
-		return sradMin;
-	}
-
-	/**
-	 * Returns the solar radiation max
-	 * 
-	 * @return solar radiation max
-	 */
-	public Observation getSradMax() {
-		return sradMax;
-	}
-
-	/**
-	 * Returns the solar radiation average
-	 * 
-	 * @return solar radiation average
-	 */
-	public Observation getSradAverage() {
-		return sradAverage;
-	}
-
-	/**
-	 * Returns the solar radiation total
-	 * 
-	 * @return solar radiation total
-	 */
-	public Observation getSradTotal() {
-		return sradTotal;
-	}
 }

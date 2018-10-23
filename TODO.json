@@ -1,0 +1,93 @@
+{
+    "Lab Section": 13,
+    "Last Modified": 2018-10-23,
+    "OU ID": 113419433,
+    "OU EMAIL": tweaver@ou.edu,
+    "Tasks": [
+        {
+            "Description": "Create Abstract Observation Method",
+            "Estimated Time (Minutes)": 10,
+            "Actual Time (Minutes)": 5
+        },
+        {
+            "Description": "Create is valid class for Abstract Observation",
+            "Estimated Time (Minutes)": 5,
+            "Actual Time (Minutes)": 3
+        },
+        {
+            "Description": "Create Statistics constructor",
+            "Estimated Time (Minutes)": 10,
+            "Actual Time (Minutes)": 25
+        },
+        {
+            "Description": "Create Date From String",
+            "Estimated Time (Minutes)": 15,
+            "Actual Time (Minutes)": 20
+        },
+        {
+            "Description": "Create String From Date",
+            "Estimated Time (Minutes)": 15,
+            "Actual Time (Minutes)": 10
+        },
+        {
+            "Description": "Create Number of Reporting Stations Getter",
+            "Estimated Time (Minutes)": 2,
+            "Actual Time (Minutes)": 2
+        },
+        {
+            "Description": "Create UTC Date Time Getter",
+            "Estimated Time (Minutes)": 5,
+            "Actual Time (Minutes)": 2
+        },
+        {
+            "Description": "Create Newer Than Method",
+            "Estimated Time (Minutes)": 5,
+            "Actual Time (Minutes)": 2
+        },
+        {
+            "Description": "Create Older Than Method",
+            "Estimated Time (Minutes)": 5,
+            "Actual Time (Minutes)": 2
+        },
+        {
+            "Description": "Create Same As Method",
+            "Estimated Time (Minutes)": 5,
+            "Actual Time (Minutes)": 2
+        },
+        {
+            "Description": "Create To String Method for Statistics",
+            "Estimated Time (Minutes)": 10,
+            "Actual Time (Minutes)": 3
+        },
+		{
+            "Description": "Create Stats Type Class",
+            "Estimated Time (Minutes)": 5,
+            "Actual Time (Minutes)": 10
+        },
+        {
+            "Description": "Create Parse Param Header Method",
+            "Estimated Time (Minutes)":15,
+            "Actual Time (Minutes)": 22
+        },
+        {
+            "Description": "Create Calculate Statistics Method",
+            "Estimated Time (Minutes)": 20,
+            "Actual Time (Minutes)": 23
+        },
+        {
+            "Description": "Create statistics test",
+            "Estimated Time (Minutes)": 15,
+            "Actual Time (Minutes)": 20
+        },
+        {
+            "Description": "Create Observation Test",
+            "Estimated Time (Minutes)": 5,
+            "Actual Time (Minutes)": 1
+        },
+        {
+            "Description": "Create Map data test",
+            "Estimated Time (Minutes)": 15,
+            "Actual Time (Minutes)": 23
+        },       
+    ]
+}

@@ -2,7 +2,7 @@
  * Observation class 
  * 
  * @author Tim Weaver
- * @version 2018-10-03
+ * @version 2018-10-23
  * 
  */
 
@@ -12,11 +12,6 @@ public class Observation extends AbstractObservation
 	 * The value of an object 
 	 */
 	private double value = 0;    
-	
-	/**
-	 * A flag to check if objects are valid
-	 */
-	private boolean valid;
 	
 	/**
 	 * Holds the station name

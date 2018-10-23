@@ -2,20 +2,24 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 /**
  * Statistics class 
  * 
  * @author Tim Weaver
- * @version 2018-10-03
+ * @version 2018-10-23
  * 
  */
 
 public class Statistics extends Observation implements DateTimeComparable
 {
     protected static String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss z";
+    protected DateTimeFormatter format;
     private GregorianCalendar utcDateTime;
+    private ZonedDateTime zdtDateTime;
     private int numberOfReportingStations;
     private StatsType statType;
     
@@ -30,13 +34,13 @@ public class Statistics extends Observation implements DateTimeComparable
      * @param inStatType State Type
      * @throws ParseException Checks for errors when parsing the file
      */
-    public Statistics(double value, String stid, String dateTimeStr, int numberOfValidStations,
+    public Statistics(double value, String stid, ZonedDateTime dateTime, int numberOfValidStations,
             StatsType inStatType) throws ParseException
     {
         super(value, stid);
         this.statType = inStatType;
         this.numberOfReportingStations = numberOfValidStations;
-        this.utcDateTime = createDateFromString(dateTimeStr);
+        //this.utcDateTime = createDateFromString(dateTimeStr);
         
     }
     
@@ -92,6 +96,11 @@ public class Statistics extends Observation implements DateTimeComparable
         return dateTime;
     }
     
+    public ZonedDateTime createZDateFromString(String dateTimeStr)
+    {
+        return zdtDateTime;        
+    }
+    
     /**
      * Takes a calendar and converts it into
      * a string
@@ -113,6 +122,11 @@ public class Statistics extends Observation implements DateTimeComparable
         returnString += "UTC";
         
         return returnString;
+    }
+    
+    public String createStringFromDate(ZonedDateTime calendar)
+    {
+        return "";
     }
 
     /**
@@ -168,6 +182,21 @@ public class Statistics extends Observation implements DateTimeComparable
      * @return date time equals
      */
     public boolean sameAs(GregorianCalendar inDateTime)
+    {
+        return utcDateTime.equals(inDateTime);
+    }
+    
+    public boolean newerThan(ZonedDateTime inDateTime)
+    {
+        return utcDateTime.before(inDateTime);
+    }
+    
+    public boolean olderThan(ZonedDateTime inDateTime)
+    {
+        return utcDateTime.after(inDateTime);
+    }
+    
+    public boolean sameAs(ZonedDateTime inDateTime)
     {
         return utcDateTime.equals(inDateTime);
     }
