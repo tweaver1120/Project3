@@ -24,9 +24,11 @@ public class MapData
 {
     HashMap<String, ArrayList<Observation>> dataCatalog = new HashMap<String, ArrayList<Observation>>();
     
-    EnumMap<StatsType, TreeMap<String, Statistics>> statistics = new EnumMap<StatsType, TreeMap<String, Statistics>>();
+    EnumMap<StatsType, TreeMap<String, Statistics>> statistics = new EnumMap<>(StatsType.class);
     
     TreeMap<String, Integer> paramPositions = new TreeMap<String, Integer>();
+    
+    ArrayList<String> lineData = new ArrayList<String>();
 	
 	/**
      * String containing TA9M
@@ -34,7 +36,7 @@ public class MapData
 	private String TA9M = "TA9M";
 	
 	/**
-     * String containing TAIR
+     * String containing TAIR 
      */
 	private String TAIR = "TAIR";
 	
@@ -70,24 +72,19 @@ public class MapData
 	 */
 	private void parseParamHeader(String inParamStr)
 	{
-	    ArrayList<String> position = new ArrayList<>();
-	    
 	    //Trims the string by whitespace
 	    String[] id = (inParamStr.trim().split("\\s+"));
 	    
-	    // Add the array string to arrayList
-	    position.addAll(Arrays.asList(id));
-	    
-	    //Set the positions based on index
-	    tairPosition = position.indexOf(TAIR);
-	    ta9mPosition = position.indexOf(TA9M);
-	    sradPosition = position.indexOf(SRAD);
-	    stidPosition = position.indexOf(STID);
+	    // Add the array string to treemap	    
+	    for (int i = 0; i < id.length; i++)
+	    {
+	        paramPositions.put(id[i], i);
+	    }
 	}
 	
-	public Integer getIndexOf()
+	public Integer getIndexOf(String inParamStr)
 	{
-	    return 0;
+	    return paramPositions.get(inParamStr);
 	}
 	
 	private void calculateAllStatistics()
@@ -97,12 +94,44 @@ public class MapData
 	
 	private void prepareDataCatalog()
 	{
+	    ArrayList<Observation> TA9MHeaderData = new ArrayList<Observation>(); 
+	    ArrayList<Observation> TAIRHeaderData = new ArrayList<Observation>(); 
+	    ArrayList<Observation> SRADHeaderData = new ArrayList<Observation>(); 
+	    ArrayList<Observation> STIDHeaderData = new ArrayList<Observation>(); 
 	    
+	    int TA9MPosition = getIndexOf(TA9M);
+	    int TAIRPosition = getIndexOf(TAIR);
+	    int SRADPosition = getIndexOf(SRAD);
+	    int STIDPosition = getIndexOf(STID);
+	    
+	    for (int i = 0; i < lineData.size(); i++)
+	    {
+	        String[] lineParts = lineData.get(i).split("\\s+");
+	        String ta9m = lineParts[TA9MPosition];
+	        String tair = lineParts[TAIRPosition];
+	        String srad = lineParts[SRADPosition];
+	        String stid = lineParts[STIDPosition];
+	        
+	        Observation ta9mObservation = new Observation(Double.parseDouble(ta9m), TA9M);
+	        Observation tairObservation = new Observation(Double.parseDouble(tair), TA9M);
+	        Observation sradObservation = new Observation(Double.parseDouble(srad), TA9M);
+	        Observation stidObservation = new Observation(Double.parseDouble(stid), TA9M);
+	        
+	        TA9MHeaderData.add(ta9mObservation);
+	        TAIRHeaderData.add(tairObservation);
+	        SRADHeaderData.add(sradObservation);
+	        STIDHeaderData.add(stidObservation);
+	    }
+	    
+	    dataCatalog.put(TA9M, TA9MHeaderData);
+	    dataCatalog.put(TAIR, TAIRHeaderData);
+	    dataCatalog.put(SRAD, SRADHeaderData);
+	    dataCatalog.put(STID, STIDHeaderData);
 	}
 	
 	public Statistics getStatistics(StatsType type, String paramId)
     {
-        
+            
     }
 	
 	/**
@@ -111,7 +140,7 @@ public class MapData
 	 * @param inData array list of all the data 
 	 * @param paramId parameter id
 	 */
-	private void calculateStatistics(ArrayList<Observation> inData, String paramId)
+	private void calculateStatistics()
 	{
 		double total = 0.0;
         int count = 0;
@@ -119,6 +148,7 @@ public class MapData
         double min = Double.POSITIVE_INFINITY;
         double max = Double.NEGATIVE_INFINITY;
         String stationId = null;
+        
         
         //Loop through data
         for(int i = 0; i < inData.size(); i++)
@@ -166,9 +196,10 @@ public class MapData
         	ta9mMin = new Statistics(min, stationId, utcDateTime, count, StatsType.MINIMUM);
 	        ta9mMax = new Statistics(max, stationId, utcDateTime, count, StatsType.MAXIMUM);
 	        ta9mAverage = new Statistics(average, MESONET, utcDateTime, count, StatsType.AVERAGE);
-        }      
+        }  
+           
 	}
-	
+
 	/**
 	 * Map Constructor setting all the fields. Also, reads in a file and calls on parse file method
 	 * and calls on calculation methods for Air Temperature at 1.5 meters, Solar Radiation and
@@ -197,9 +228,10 @@ public class MapData
 			System.out.println("Error reading from file!\n"); 
 		}	
 		
-		calculateStatistics(sradData, SRAD);  
-		calculateStatistics(ta9mData, TA9M);
-		calculateStatistics(tairData, TAIR);	
+		
+		//calculateStatistics(sradData, SRAD);  
+		//calculateStatistics(ta9mData, TA9M);
+		//calculateStatistics(tairData, TAIR);	
 	} 
 	
 	/**
@@ -254,21 +286,24 @@ public class MapData
 		//Set header indexes
 		String headers = br.readLine();
 	    parseParamHeader(headers);
-		
+	    
 		//Initialize variable to 0
 		numberOfStations = 0;
 		
 		//Read new line
 		strg = br.readLine();
 		
+		lineData.add(strg);
         //Initialize data arrays
+		/*
         sradData = new ArrayList<Observation>();
         tairData = new ArrayList<Observation>();
         ta9mData = new ArrayList<Observation>();
-		
+		*/
 		//Loops through an array while the string is not empty
 		while (strg != null)
 		{
+		    
 			if (!strg.trim().isEmpty())
 			{		
 				//Parse the file based on white space
@@ -282,11 +317,15 @@ public class MapData
 				numberOfStations++;
 			}
 			
+			
 			//Read new line
 			strg = br.readLine();
+	        lineData.add(strg);
 		}
 		//Close the file
 		br.close();
+		
+	    prepareDataCatalog();
 	}
 	
 	/**
@@ -314,6 +353,8 @@ public class MapData
 				 =========================================================
 	 * 
 	 */ 
+	
+	
 	public String toString()
 	{ 
 		String lineBreak = createLineBreak();
@@ -342,6 +383,7 @@ public class MapData
 		return format;
 	}
 
+	
 	/**
 	 * Creates a line of 57 "=" signs to separate 
 	 * information for the toString method
